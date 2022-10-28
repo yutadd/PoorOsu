@@ -62,11 +62,39 @@ public class Main {
 			public void run() {
 				try {
 					Thread.sleep(500);
-					for(int i=0;i<30;i++) {
-						addtg(i*40,(i*i)+100);//-y=x^2+100
-						Thread.sleep(150);
+					for(int i=0;i<20;i++) {
+						addtg(i*30+100,i*30+100);
+						Thread.sleep(10);
 					}
-					
+					Thread.sleep(10);
+					for(int i=0;i<20;i++) {
+						addtg(i*10+600,(20-i)*30+100);
+						Thread.sleep(10);
+					}
+					for(int i=0;i<20;i++) {
+						addtg(i*-10+900,i*30+100);
+						Thread.sleep(10);
+					}
+					Thread.sleep(10);
+					for(int i=0;i<20;i++) {
+						addtg(i+1000,i*30+100);
+						Thread.sleep(10);
+					}
+					Thread.sleep(50);
+					for(int i=0;i<100;i++) {
+						addtg((int)(Math.sin(i*330)*300)+1400,i*9);
+						Thread.sleep(20);
+					}
+					Thread.sleep(50);
+					for(int i=20;i>0;i--) {
+						addtg((i*60)+800,i*60);
+						Thread.sleep(30);
+					}
+					for(int i=0;i<80;i++) {
+						addtg(i*40,(int)(Math.cos(i*3)*200)+500);
+						Thread.sleep(20);
+					}
+					Thread.sleep(1000);
 				}catch(Exception e) {}
 			}
 		};
@@ -82,7 +110,7 @@ public class Main {
 					
 				});
 				try {
-				precious.setText((int)(((double)hited/eliminated_target)*100)+"% "+hited+"/"+eliminated_target);
+				precious.setText((int)((double)((double)hited/(double)eliminated_target)*100.0)+"% "+hited+"/"+eliminated_target);
 				}catch(Exception e) {}
 				cursor.setBounds(jf.getMousePosition().x-20,jf.getMousePosition().y-30,60,60);}catch(Exception e) {}
 				jf.repaint();

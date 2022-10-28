@@ -44,7 +44,7 @@ public class Target implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		score();
+		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -54,7 +54,7 @@ public class Target implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+		score();
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
