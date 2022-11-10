@@ -18,17 +18,17 @@ public class Target implements MouseListener{
 		return false;
 	}
 	public Target(int x,int y) {
-		expire=System.currentTimeMillis()+1000;
+		expire=System.currentTimeMillis()+600;
 		this.x=x;
 		this.y=y;
 		label.setIcon(new ImageIcon("target.png"));
-		label.setBounds(x,y,80,80);
+		label.setBounds(x,y,80*2,80*2);
 		label.addMouseListener(this);
 	}
 	public void eliminate() {
 		label.setVisible(false);
 		Main.eliminated_target++;
-		Main.targets.remove(this);
+		Main.removeList.add(this);
 	}
 	public void score() {
 		Main.score_board.setText(Main.score+300+"");
@@ -44,7 +44,7 @@ public class Target implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		score();
+		
 	}
 	@Override
 	public void mouseReleased(MouseEvent e) {
@@ -54,7 +54,7 @@ public class Target implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO 自動生成されたメソッド・スタブ
-		
+		score();
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
