@@ -1,6 +1,12 @@
 package poor.osu;
 
 import java.awt.Color;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.AudioDevice;
+import javazoom.jl.player.FactoryRegistry;
+import javazoom.jl.player.advanced.AdvancedPlayer;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
@@ -8,13 +14,20 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.regex.Pattern;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -85,9 +98,8 @@ public class Main {
 						System.out.println("ヒットオブジェクトの読み込み。"+Integer.parseInt(objects[2])+"\t"+Integer.parseInt(objects[0])+"\t"+Integer.parseInt(objects[1]));
 					}else {
 						String[] params=objects[5].split(Pattern.quote("|"));
-						if(params[0].equals("L")) {
+						if(params[0].equals("L")||params[0].equals("P")||params[0].equals("B")) {
 							int sx=Integer.parseInt(objects[0]),sy=Integer.parseInt(objects[1]);
-
 							System.out.println(params[1]);
 							int fx=Integer.parseInt(params[1].split(":")[0]),fy=Integer.parseInt(params[1].split(":")[1]);
 							double x_di=((double)(fx-sx)/(double)10);
@@ -104,7 +116,7 @@ public class Main {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		Thread th_cursor=new Thread() {
 			@Override
 			public void run() {
@@ -116,8 +128,32 @@ public class Main {
 			}
 		};
 		th_cursor.start();
-		int offset=10000;
+		int offset=-130;
 		long startTime=System.currentTimeMillis()-offset;
+		Thread th_audio=new Thread() {
+			@Override
+			public void run() {
+				try {
+					AudioDevice device = FactoryRegistry.systemRegistry().createAudioDevice();
+			        AdvancedPlayer player = new AdvancedPlayer(new FileInputStream(new File("audio.mp3")), device);
+			        player.setPlayBackListener(new PlaybackListener() {
+			            @Override
+			            public void playbackStarted(PlaybackEvent evt) {
+			                System.out.println("[Playback] started.");
+			            }
+			            @Override
+			            public void playbackFinished(PlaybackEvent evt) {
+			                System.out.println("[Playback] finished.");
+			            }
+			        });
+			        // play it!
+			        player.play();
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		th_audio.start();
 		while(true) {//一ミリ病以内に描画できないと飛ばされて描画されない可能性がある。。
 			try {
 				long currenttime=System.currentTimeMillis();
